@@ -1,10 +1,12 @@
-import React, { ReactElement, useState } from 'react'
-import { useRouter } from 'next/router'
-import { Meta } from '/components/meta'
-import { useDidMount } from 'rooks'
-import { Scene } from '/components/cuboid/scene'
-import { Cuboid } from '/components/cuboid/cuboid'
-import { SensorData, SensorService } from '/services/sensor.service'
+import type Peer from 'peerjs'
+import React, {ReactElement, useState} from 'react'
+import {useRouter} from 'next/router'
+import {Meta} from '/components/meta'
+import {useDidMount} from 'rooks'
+import {Scene} from '/components/cuboid/scene'
+import {Cuboid} from '/components/cuboid/cuboid'
+import {SensorData, SensorService} from '/services/sensor.service'
+import {WEBRTC_CONFIG} from '/constants/webrtc'
 
 // import ContentLoader from 'react-content-loader'
 // const x = dynamic(
@@ -41,9 +43,9 @@ function HostScreen({ connStatus, share, data }: HostScreenProps): ReactElement 
         return (
             <Scene perspective={500}>
                 <Cuboid
-                    W={500}
-                    H={10}
-                    D={100}
+                    W={100}
+                    H={50}
+                    D={10}
                     x={data[0]}
                     y={data[1]}
                     z={data[2]}
@@ -108,12 +110,19 @@ export default function Room(): ReactElement {
 
     console.log('connStatus: ' + connStatus)
 
-    useDidMount(() => {
+    const PeerConf: Peer.PeerJSOption = {
+        secure: true,
+        config: WEBRTC_CONFIG,
+        debug: 2
+    }
+
+    useDidMount(() =>
         import('peerjs').then((m) => {
             const Peer = m.default
 
             if (isHost) {
-                const host = new Peer()
+                const host = new Peer(PeerConf)
+                let lastConnection: Peer.DataConnection | null = null
 
                 host.on('open', (id) => {
                     setShare(window.location.href + id)
@@ -121,24 +130,17 @@ export default function Room(): ReactElement {
                 })
 
                 host.on('connection', (conn) => {
-                    console.log('WE HAVE INCOMING CONN')
-                    console.log('is open: ' + conn.open)
-                    console.log(conn)
-
-                    if (connStatus === 'connected') {
-                        console.log('closed due to existing conn.')
-                        // We already have a connection.
-                        conn.close()
-                        return
+                    if (lastConnection && lastConnection.open) {
+                        lastConnection.close()
+                    } else {
+                        lastConnection = conn
                     }
 
-
-                    conn.on('open', () => {
-                        console.log('WE DID CONNECT!')
-                        setConnStatus('connected')
-                    })
+                    conn.on('open', () => setConnStatus('connected'))
                     conn.on('data', (data: SensorData) => {
-                        setData(data)
+                        // alpha -> x
+                        //
+                        setData([0, 0, 0, data[1], data[2], data[0]])
                         console.log(data)
                     })
                     conn.on('close', () => setConnStatus('closed'))
@@ -151,42 +153,44 @@ export default function Room(): ReactElement {
                 SensorService.enable()
 
                 const id = window.location.pathname.split('/')[1]
-                const client = new Peer()
+                const client = new Peer(PeerConf)
 
                 client.on('open', () => {
                     setConnStatus('open')
 
-                    console.log(client)
+                    const conn = client.connect(id, {
+                        reliable: false
+                    })
 
-                    const conn = client.connect(id /*, { reliable: true }*/)
-
-                    console.log(conn)
+                    setInterval(() => {
+                        console.log('is open: ' + conn.open)
+                    }, 2000)
 
                     conn.on('open', () => {
-                        console.log('CONNECTION IS NOW OPEN')
-
                         setConnStatus('connected')
-                        // SensorService.subscribe((data) => conn.send(data))
-                        conn.send([0, 0, 0, 0, 0, 31])
+                        SensorService.subscribe((data) => {
+                            if (!conn.open) return
+                            conn.send(data)
+                        })
                     })
                     conn.on('close', () => setConnStatus('closed'))
                     conn.on('error', (err) => alert(err))
                 })
-                // client.on('connection', function (c) {
-                //     // Disallow incoming connections
-                //     c.on('open', function () {
-                //         c.send('Sender does not accept incoming connections')
-                //         setTimeout(function () {
-                //             c.close()
-                //         }, 500)
-                //     })
-                // })
+                client.on('connection', function (c) {
+                    // Disallow incoming connections
+                    c.on('open', function () {
+                        c.send('Sender does not accept incoming connections')
+                        setTimeout(function () {
+                            c.close()
+                        }, 500)
+                    })
+                })
                 client.on('close', () => setConnStatus('closed'))
                 client.on('disconnected', () => setConnStatus('disconnected'))
                 client.on('error', (err) => alert(err))
             }
         })
-    })
+    )
 
     return (
         <>
