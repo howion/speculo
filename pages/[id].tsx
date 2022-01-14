@@ -1,12 +1,12 @@
 import type Peer from 'peerjs'
-import React, {ReactElement, useState} from 'react'
-import {useRouter} from 'next/router'
-import {Meta} from '/components/meta'
-import {useDidMount} from 'rooks'
-import {Scene} from '/components/cuboid/scene'
-import {Cuboid} from '/components/cuboid/cuboid'
-import {SensorData, SensorService} from '/services/sensor.service'
-import {WEBRTC_CONFIG} from '/constants/webrtc'
+import React, { ReactElement, useState } from 'react'
+import { useRouter } from 'next/router'
+import { Meta } from '/components/meta'
+import { useDidMount } from 'rooks'
+import { Scene } from '/components/cuboid/scene'
+import { Cuboid } from '/components/cuboid/cuboid'
+import { SensorData, SensorService } from '/services/sensor.service'
+import { WEBRTC_CONFIG } from '/constants/webrtc'
 
 // import ContentLoader from 'react-content-loader'
 // const x = dynamic(
@@ -25,9 +25,9 @@ export type SpatialData = [
     number, // Y
     number, // Z
 
-    number, // Rx ie alpha
-    number, // Ry ie beta
-    number // Rz ie gamma
+    number, // alpha
+    number, // gamma
+    number // beta
 ]
 
 export type ConnectionStatus = 'idle' | 'open' | 'closed' | 'connected' | 'disconnected'
@@ -43,16 +43,15 @@ function HostScreen({ connStatus, share, data }: HostScreenProps): ReactElement 
         return (
             <Scene perspective={500}>
                 <Cuboid
-                    W={100}
-                    H={50}
-                    D={10}
+                    W={200}
+                    H={400}
+                    D={40}
                     x={data[0]}
                     y={data[1]}
                     z={data[2]}
-                    unit="deg"
-                    Rx={data[3]}
-                    Ry={data[4]}
-                    Rz={data[5]}
+                    alpha={data[3]}
+                    gamma={data[4]}
+                    beta={data[5]}
                 />
             </Scene>
         )
@@ -108,12 +107,13 @@ export default function Room(): ReactElement {
     const [share, setShare] = useState<text | null>(null)
     const [data, setData] = useState<SpatialData>([0, 0, 0, 0, 0, 0])
 
-    console.log('connStatus: ' + connStatus)
-
     const PeerConf: Peer.PeerJSOption = {
-        secure: true,
+        // host: '144.122.116.84',
+        // port: 9000,
+        // path: '/',
+        // secure: true,
         config: WEBRTC_CONFIG,
-        debug: 2
+        // debug: 2
     }
 
     useDidMount(() =>
@@ -138,10 +138,13 @@ export default function Room(): ReactElement {
 
                     conn.on('open', () => setConnStatus('connected'))
                     conn.on('data', (data: SensorData) => {
-                        // alpha -> x
-                        //
-                        setData([0, 0, 0, data[1], data[2], data[0]])
-                        console.log(data)
+                        // Note that
+                        // data[0] is
+                        // data[1] is beta
+                        // data[2] is gamma
+
+                        setData([0, 0, 0, data[0], data[1] - 90, data[2]])
+                        // console.log([data[0], data[1], data[2]])
                     })
                     conn.on('close', () => setConnStatus('closed'))
                     conn.on('error', (err) => alert(err))
