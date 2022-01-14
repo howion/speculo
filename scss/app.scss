@@ -1,0 +1,40 @@
+body {
+    width: 100%;
+    overflow-y: scroll;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}
+
+#app {
+    position: relative;
+    width: 100%;
+    height: 100vh !important;
+    //min-height: 100vh;
+    //font-family: 'Inter', 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: sans-serif;
+    //scroll-behavior: smooth;
+
+    //isolation: isolate;
+
+    > .#{$prefix}-app-container {
+        min-height: 100vh;
+        overflow: hidden;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+/* Additional resets. */
+* {
+    &:focus {
+        outline: none;
+    }
+}
