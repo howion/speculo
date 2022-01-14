@@ -1,0 +1,17 @@
+@mixin t-make-container($max-width) {
+    position: relative;
+    width: 100%;
+    max-width: $max-width;
+    margin: 0 auto;
+}
+
+$container-lg-gutter-x: 24px;
+$container-md-gutter-x: 24px;
+$container-sm-gutter-x: 24px;
+
+.#{$prefix}-container {
+    @include t-make-container($screen-lg-min);
+
+    padding-right: $container-lg-gutter-x;
+    padding-left: $container-lg-gutter-x;
+}

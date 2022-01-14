@@ -1,0 +1,5 @@
+# !.eslintrc.js
+# !.stylelintrc.js
+
+.next/
+node_modules/

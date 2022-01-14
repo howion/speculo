@@ -1,0 +1,47 @@
+@mixin speculo-min-custom($min-width) {
+    @media (min-width: $min-width) {
+        @content;
+    }
+}
+
+@mixin speculo-max-custom($max-width) {
+    @media (max-width: $max-width) {
+        @content;
+    }
+}
+
+@mixin speculo-min-sm {
+    @include speculo-min-custom($screen-sm-min) {
+        @content;
+    }
+}
+
+@mixin speculo-max-sm {
+    @include speculo-max-custom($screen-sm-min) {
+        @content;
+    }
+}
+
+@mixin speculo-min-md {
+    @include speculo-min-custom($screen-md-min) {
+        @content;
+    }
+}
+
+@mixin speculo-max-md {
+    @include speculo-max-custom($screen-md-min) {
+        @content;
+    }
+}
+
+@mixin speculo-min-lg {
+    @include speculo-min-custom($screen-sm-lg) {
+        @content;
+    }
+}
+
+@mixin speculo-max-lg {
+    @include speculo-max-custom($screen-sm-lg) {
+        @content;
+    }
+}

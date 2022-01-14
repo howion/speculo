@@ -1,0 +1,89 @@
+/*MIT License
+
+Copyright (c) 2021 appukuttan66
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
+.scene {
+    --perspective: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    background: #000;
+    perspective: var(--perspective); /* change the persective */
+}
+
+.cuboid {
+    --bg: rgba(0, 0, 255, 0.2);
+    --width: 30vmin; /* change width */
+    --height: 20vmin; /* change height */
+    --depth: 20vmin; /* change depth */
+    position: relative;
+    width: var(--width);
+    height: var(--height);
+    transform-style: preserve-3d;
+    /* add the below line in your code to rotate the cuboid*/
+    /*transform: rotateX(24deg) rotateY(32deg);*/
+}
+
+.cuboid-s {
+    position: absolute;
+    background: var(--bg);
+    border: 1px #ccc solid;
+}
+
+.cuboid-s:nth-child(1), .cuboid-s:nth-child(2) {
+    --co: -0.5;
+    width: var(--width);
+    height: var(--height);
+    transform: translate3d(0 , 0, calc(var(--depth) * var(--co)));
+}
+
+.cuboid-s:nth-child(2) {
+    --co: 0.5;
+}
+
+.cuboid-s:nth-child(3), .cuboid-s:nth-child(4) {
+    --rt: 90deg;
+    top: 50%;
+    left: 50%;
+    width: var(--depth);
+    height: var(--height);
+    transform: translate(-50%, -50%) rotateY(var(--rt)) translate3d(0, 0, calc(var(--width) * -0.5));
+}
+
+.cuboid-s:nth-child(4) {
+    --rt: -90deg;
+}
+
+.cuboid-s:nth-child(5), .cuboid-s:nth-child(6) {
+    --rt: -90deg;
+    top: 50%;
+    left: 50%;
+    width: var(--width);
+    height: var(--depth);
+    transform: translate(-50%, -50%) rotateX(var(--rt)) translate3d(0 , 0, calc(var(--height) * -0.5));
+}
+
+.cuboid-s:nth-child(6) {
+    --rt: 90deg;
+}
+
