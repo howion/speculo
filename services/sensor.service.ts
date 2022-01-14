@@ -1,6 +1,5 @@
 import { Subject } from 'rxjs'
 import { Service } from '/services/service'
-import { debounce } from '/helpers/debounce'
 
 export type SensorData = [
     number, // OrientationX
@@ -55,9 +54,6 @@ export class SensorService implements Service<SensorData> {
     }
 
     protected static _dispatch(): void {
-        // setTimeout(() => {
-        //     if (!this._enabled) return
-        // })
         const _new: SensorData = [
             SensorService._ort[0],
             SensorService._ort[1],
@@ -67,17 +63,17 @@ export class SensorService implements Service<SensorData> {
             SensorService._acc[2]
         ]
 
-        if (
-            SensorService._last[0] === _new[0] &&
-            SensorService._last[1] === _new[1] &&
-            SensorService._last[2] === _new[2] &&
-            SensorService._last[3] === _new[3] &&
-            SensorService._last[4] === _new[4] &&
-            SensorService._last[5] === _new[5]
-        )
-            return
+        // if (
+        //     SensorService._last[0] === _new[0] &&
+        //     SensorService._last[1] === _new[1] &&
+        //     SensorService._last[2] === _new[2] &&
+        //     SensorService._last[3] === _new[3] &&
+        //     SensorService._last[4] === _new[4] &&
+        //     SensorService._last[5] === _new[5]
+        // )
+        //     return
 
-        SensorService._subject.next((SensorService._last = _new))
+        SensorService._subject.next(_new)
     }
 
     protected static handleDeviceOrientation(e: DeviceOrientationEvent): void {

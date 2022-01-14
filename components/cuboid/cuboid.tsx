@@ -1,7 +1,7 @@
-import React, {ReactElement} from 'react'
+import React, { ReactElement } from 'react'
+import { MiscUtil } from '/utils/misc.util'
 
 export interface CuboidProps {
-
     W: number
     H: number
     D: number
@@ -10,32 +10,33 @@ export interface CuboidProps {
     y: number
     z: number
 
-    unit?: 'deg' | 'rad' | 'grad' | 'turn'
-
-    Rx: number // in radians
-    Ry: number
-    Rz: number
+    alpha: number // in radians
+    beta: number
+    gamma: number
 
     cubeColor?: text
     cubeOutline?: text
 }
 
 export function Cuboid(props: CuboidProps): ReactElement {
-    const unit = props.unit ?? 'rad'
-
     return (
-        <div className="cuboid" style={{
-            '--width': `${props.W}px`,
-            '--height': `${props.H}px`,
-            '--depth': `${props.D}px`,
-            transform: `rotateX(${props.Rx}${unit}) rotateY(${props.Ry}${unit}) rotateZ(${props.Rz}${unit})`
-        } as any}>
-            <div className="cuboid-s"/>
-            <div className="cuboid-s"/>
-            <div className="cuboid-s"/>
-            <div className="cuboid-s"/>
-            <div className="cuboid-s"/>
-            <div className="cuboid-s"/>
+        <div
+            className="cuboid"
+            style={
+                {
+                    '--width': `${props.W}px`,
+                    '--height': `${props.H}px`,
+                    '--depth': `${props.D}px`,
+                    'transform': MiscUtil.eulerToCssTransformation(props.alpha, props.beta, props.gamma)
+                } as any
+            }
+        >
+            <div className="cuboid-s" />
+            <div className="cuboid-s" />
+            <div className="cuboid-s" />
+            <div className="cuboid-s" />
+            <div className="cuboid-s" />
+            <div className="cuboid-s" />
         </div>
     )
 }

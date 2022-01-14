@@ -10,7 +10,7 @@ export const App = {
         description: '',
         author: 'howion',
         keywords: ['P2P', 'WebRTC'],
-        themeColor: '#00aaff'
+        themeColor: '#000000'
     },
     // api: {
     //     baseUrl: isProduction ? `${PRODUCTION_BASE}/api` : 'http://localhost:3000/api'

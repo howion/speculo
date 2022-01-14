@@ -17,9 +17,7 @@ canvas {
     //min-height: 100vh;
     //font-family: 'Inter', 'Helvetica Neue', Helvetica, sans-serif;
     font-family: sans-serif;
-    //scroll-behavior: smooth;
-
-    //isolation: isolate;
+    isolation: isolate;
 
     > .#{$prefix}-app-container {
         min-height: 100vh;
