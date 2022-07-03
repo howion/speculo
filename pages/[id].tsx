@@ -1,11 +1,11 @@
-import type Peer from 'peerjs'
+import type { DataConnection, PeerJSOption } from 'peerjs'
 import React, { ReactElement, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Meta } from '/components/meta'
 import { useDidMount } from 'rooks'
 import { Scene } from '/components/cuboid/scene'
 import { Cuboid } from '/components/cuboid/cuboid'
-import { FinalOrientationData, SensorService } from '/services/sensor.service'
+import { SensorService } from '/services/sensor.service'
 import { WEBRTC_CONFIG } from '/constants/webrtc'
 
 // import ContentLoader from 'react-content-loader'
@@ -107,7 +107,7 @@ export default function Room(): ReactElement {
     const [share, setShare] = useState<text | null>(null)
     const [data, setData] = useState<SpatialData>([0, 0, 0, 0, 0, 0])
 
-    const PeerConf: Peer.PeerJSOption = {
+    const PeerConf: PeerJSOption = {
         // host: '144.122.116.84',
         // port: 9000,
         // path: '/',
@@ -122,7 +122,7 @@ export default function Room(): ReactElement {
 
             if (isHost) {
                 const host = new Peer(PeerConf)
-                let lastConnection: Peer.DataConnection | null = null
+                let lastConnection: DataConnection | null = null
 
                 host.on('open', (id) => {
                     setShare(window.location.href + id)

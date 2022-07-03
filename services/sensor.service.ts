@@ -78,16 +78,5 @@ export class SensorService implements Service<FinalOrientationData> {
     }
 
     // protected static handleDeviceMotion(e: DeviceMotionEvent): void {
-    //     if (e.acceleration === null || e.acceleration.x === null) {
-    //         SensorService.disable()
-    //         alert('Can not read sensor (device motion) data. Make sure it is a https connection.')
-    //         return
-    //     }
-
-    //     SensorService._acc = [
-    //         $(e.acceleration.x as number),
-    //         $(e.acceleration.y as number),
-    //         $(e.acceleration.z as number)
-    //     ]
     // }
 }
