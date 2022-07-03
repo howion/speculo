@@ -2,7 +2,9 @@
 ## Custom ##
 ######################################################################
 
-.ignore
+# disable previous patches
+# "postinstall": "patch-package"
+/patches
 
 # IntelliJ (all)
 .idea

@@ -5,7 +5,7 @@ import { Meta } from '/components/meta'
 import { useDidMount } from 'rooks'
 import { Scene } from '/components/cuboid/scene'
 import { Cuboid } from '/components/cuboid/cuboid'
-import { SensorData, SensorService } from '/services/sensor.service'
+import { FinalOrientationData, SensorService } from '/services/sensor.service'
 import { WEBRTC_CONFIG } from '/constants/webrtc'
 
 // import ContentLoader from 'react-content-loader'
@@ -49,9 +49,9 @@ function HostScreen({ connStatus, share, data }: HostScreenProps): ReactElement 
                     x={data[0]}
                     y={data[1]}
                     z={data[2]}
-                    alpha={data[3]}
-                    gamma={data[4]}
-                    beta={data[5]}
+                    yaw={data[3]}
+                    pitch={data[4]}
+                    roll={data[5]}
                 />
             </Scene>
         )
@@ -137,14 +137,13 @@ export default function Room(): ReactElement {
                     }
 
                     conn.on('open', () => setConnStatus('connected'))
-                    conn.on('data', (data: SensorData) => {
-                        // Note that
-                        // data[0] is
-                        // data[1] is beta
-                        // data[2] is gamma
-
-                        setData([0, 0, 0, data[0], data[1] - 90, data[2]])
-                        // console.log([data[0], data[1], data[2]])
+                    conn.on('data', (data: any) => {
+                        setData([
+                            0, 0, 0,
+                            data[0],
+                            data[1],
+                            data[2]
+                        ])
                     })
                     conn.on('close', () => setConnStatus('closed'))
                     conn.on('error', (err) => alert(err))
@@ -173,7 +172,7 @@ export default function Room(): ReactElement {
                         setConnStatus('connected')
                         SensorService.subscribe((data) => {
                             if (!conn.open) return
-                            conn.send(data)
+                            conn.send([data[0], data[1], data[2]])
                         })
                     })
                     conn.on('close', () => setConnStatus('closed'))

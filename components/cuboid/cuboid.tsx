@@ -10,26 +10,26 @@ export interface CuboidProps {
     y: number
     z: number
 
-    alpha: number // in radians
-    beta: number
-    gamma: number
+    yaw: number // in radians
+    roll: number
+    pitch: number
 
     cubeColor?: text
     cubeOutline?: text
 }
 
 export function Cuboid(props: CuboidProps): ReactElement {
+    console.log(`yaw: ${props.yaw}, roll: ${props.roll}, pitch: ${props.pitch}`)
+
     return (
         <div
             className="cuboid"
-            style={
-                {
-                    '--width': `${props.W}px`,
-                    '--height': `${props.H}px`,
-                    '--depth': `${props.D}px`,
-                    'transform': MiscUtil.eulerToCssTransformation(props.alpha, props.beta, props.gamma)
-                } as any
-            }
+            style={{
+                '--width': `${props.W}px`,
+                '--height': `${props.H}px`,
+                '--depth': `${props.D}px`,
+                'transform': MiscUtil.eulerToCssTransformation(props.yaw, props.pitch, props.roll)
+            } as any}
         >
             <div className="cuboid-s" />
             <div className="cuboid-s" />
