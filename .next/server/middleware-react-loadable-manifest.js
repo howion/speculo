@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"pages/[id].tsx -> peerjs\":{\"id\":\"pages/[id].tsx -> peerjs\",\"files\":[\"static/chunks/node_modules_peerjs_dist_bundler_mjs.js\"]}}"

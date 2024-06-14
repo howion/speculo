@@ -20,7 +20,9 @@
         height: 100vh;
         background-color: rgba(#fff, 0.85);
         opacity: 1;
-        transition: opacity 300ms, visibility 300ms;
+        transition:
+            opacity 300ms,
+            visibility 300ms;
         backdrop-filter: blur(4px);
 
         &.hidden {
@@ -64,7 +66,9 @@
         cursor: pointer;
         border: 1px solid transparent;
         border-radius: 4px;
-        transition: background-color 300ms, color 300ms;
+        transition:
+            background-color 300ms,
+            color 300ms;
 
         &.borderless {
             line-height: 44px;

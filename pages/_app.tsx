@@ -1,16 +1,14 @@
 // PACKAGES
-import React, { ReactElement } from 'react'
-import { AppProps } from 'next/app'
+import React, { type ReactElement } from 'react'
+import { type AppProps } from 'next/app'
 
 // COMPONENTS
-// import { Modal } from '/components/modal'
-// import { Splash } from '/components/splash'
-import { Meta } from '/components/meta'
 
 // SCSS
 import '/scss/main.scss'
+import { Meta } from '../components/meta'
 
-export default function App({Component, pageProps, router}: AppProps): ReactElement {
+export default function App({ Component, pageProps, router }: AppProps): ReactElement {
     // const appRef = useRef<HTMLDivElement>(null)
 
     let route = router.route.split('/')[1].trim()
@@ -18,11 +16,11 @@ export default function App({Component, pageProps, router}: AppProps): ReactElem
 
     return (
         <>
-            <Meta _viewport={true}/>
+            <Meta _viewport={true} />
             <div id="app" /*ref={appRef}*/>
                 {/*<Modal/>*/}
                 <div className={`speculo-${route}`}>
-                    <Component {...pageProps} /*appRef={appRef}*//>
+                    <Component {...pageProps} /*appRef={appRef}*/ />
                 </div>
             </div>
         </>

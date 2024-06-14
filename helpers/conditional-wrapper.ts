@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 
 interface ConditionalWrapperProps {
     condition: boolean
@@ -6,8 +6,6 @@ interface ConditionalWrapperProps {
     children: ReactElement
 }
 
-export function ConditionalWrapper(
-    props: ConditionalWrapperProps
-): ReactElement {
+export function ConditionalWrapper(props: ConditionalWrapperProps): ReactElement {
     return props.condition ? props.wrapper(props.children) : props.children
 }

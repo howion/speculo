@@ -1,24 +1,13 @@
 import type { DataConnection, PeerJSOption } from 'peerjs'
-import React, { ReactElement, useState } from 'react'
+import React, { type ReactElement, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Meta } from '/components/meta'
 import { useDidMount } from 'rooks'
-import { Scene } from '/components/cuboid/scene'
-import { Cuboid } from '/components/cuboid/cuboid'
-import { SensorService } from '/services/sensor.service'
-import { WEBRTC_CONFIG } from '/constants/webrtc'
 
-// import ContentLoader from 'react-content-loader'
-// const x = dynamic(
-// //     () => import('@react-three/fiber'),
-// //     { ssr: false }
-// // )
-// //
-// // console.log(x)
-
-// import function SafeHydrate({ children }) {
-//     return <div suppressHydrationWarning>{typeof window === 'undefined' ? null : children}</div>
-// }
+import { Scene } from '../components/cuboid/scene'
+import { Cuboid } from '../components/cuboid/cuboid'
+import { WEBRTC_CONFIG } from '../constants/webrtc'
+import { SensorService } from '../services/sensor.service'
+import { Meta } from '../components/meta'
 
 export type SpatialData = [
     number, // X
@@ -44,14 +33,14 @@ function HostScreen({ connStatus, share, data }: HostScreenProps): ReactElement 
             <Scene perspective={500}>
                 <Cuboid
                     W={200}
-                    H={400}
-                    D={40}
+                    H={40}
+                    D={400}
                     x={data[0]}
                     y={data[1]}
                     z={data[2]}
-                    yaw={data[3]}
-                    pitch={data[4]}
-                    roll={data[5]}
+                    A={data[3]}
+                    G={data[4]}
+                    B={data[5]}
                 />
             </Scene>
         )
@@ -67,13 +56,11 @@ function HostScreen({ connStatus, share, data }: HostScreenProps): ReactElement 
 
     return (
         <div className="speculo-home-welcome">
-            {share ? (
+            {share ?
                 <p>
                     Open this link in your mobile device: <a href={share}>{share}</a> and keep this tab open.
                 </p>
-            ) : (
-                <p>Creating a host peer...</p>
-            )}
+            :   <p>Creating a host peer...</p>}
         </div>
     )
 }
@@ -86,8 +73,12 @@ function ClientScreen({ connStatus }: ClientScreenProps): ReactElement {
     if (connStatus !== 'idle' && connStatus !== 'open') {
         return (
             <div className="speculo-home-welcome">
-                {connStatus === 'connected' ? <p>Connected!</p> : null}
-                {connStatus === 'closed' || connStatus === 'disconnected' ? <p>Disconnected!</p> : null}
+                {connStatus === 'connected' ?
+                    <p>Connected!</p>
+                :   null}
+                {connStatus === 'closed' || connStatus === 'disconnected' ?
+                    <p>Disconnected!</p>
+                :   null}
             </div>
         )
     }
@@ -112,7 +103,7 @@ export default function Room(): ReactElement {
         // port: 9000,
         // path: '/',
         // secure: true,
-        config: WEBRTC_CONFIG,
+        config: WEBRTC_CONFIG
         // debug: 2
     }
 
@@ -138,12 +129,7 @@ export default function Room(): ReactElement {
 
                     conn.on('open', () => setConnStatus('connected'))
                     conn.on('data', (data: any) => {
-                        setData([
-                            0, 0, 0,
-                            data[0],
-                            data[1],
-                            data[2]
-                        ])
+                        setData([0, 0, 0, data[0], data[1], data[2]])
                     })
                     conn.on('close', () => setConnStatus('closed'))
                     conn.on('error', (err) => alert(err))
@@ -196,13 +182,15 @@ export default function Room(): ReactElement {
 
     return (
         <>
-            <Meta />
+            <Meta title="Speculo" />
             <main className="speculo-home-main">
-                {isHost ? (
-                    <HostScreen connStatus={connStatus} data={data} share={share} />
-                ) : (
-                    <ClientScreen connStatus={connStatus} />
-                )}
+                {isHost ?
+                    <HostScreen
+                        connStatus={connStatus}
+                        data={data}
+                        share={share}
+                    />
+                :   <ClientScreen connStatus={connStatus} />}
             </main>
         </>
     )

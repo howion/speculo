@@ -2,66 +2,24 @@
 ## Custom ##
 ######################################################################
 
-# disable previous patches
-# "postinstall": "patch-package"
-/patches
-
-# IntelliJ (all)
-.idea
-
-# Private key
+# Private keys
 *.ppk
 
 # Lock Files
-# npm-shrinkwrap.json
-# package-lock.json
-# yarn.lock
+npm-shrinkwrap.json
+package-lock.json
+bun.lockb
+
+# Astro Files
+.astro/
+dist/
 
 ######################################################################
 ## IntelliJ ##
 ######################################################################
 
-# User-specific stuff
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/**/usage.statistics.xml
-.idea/**/dictionaries
-.idea/**/shelf
-
-# AWS User-specific
-.idea/**/aws.xml
-
-# Generated files
-.idea/**/contentModel.xml
-
-# Sensitive or high-churn files
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-.idea/**/dbnavigator.xml
-
-# Mongo Explorer plugin
-
-# File-based project format
-*.iws
-
-# Editor-based Rest Client
-.idea/httpRequests
-
-# Cache file creation bug
-.idea/$CACHE_FILE$
-
-# Plugin Files
-.idea/**/mongoSettings.xml
-.idea/**/sonarlint/
-.idea/**/markdown-navigator.xml
-.idea/**/markdown-navigator-enh.xml
-.idea/**/markdown-navigator/
-.idea/**/sonarIssues.xml
-.idea/codestream.xml
+# IntelliJ (all)
+.idea
 
 ######################################################################
 ## Next.js ##
@@ -71,10 +29,6 @@
 .pnp
 .pnp.js
 
-# next.js
-.next
-/out
-
 # misc
 *.pem
 
@@ -83,7 +37,7 @@
 .env.*
 
 # vercel
-.vercel
+.vercel/
 
 ######################################################################
 ## Node ##

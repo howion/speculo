@@ -1,6 +1,5 @@
-import React, { ReactElement } from 'react'
-import Document, { Html, Head, Main, NextScript, DocumentInitialProps, DocumentContext } from 'next/document'
-// import { Splash } from '@components/splash'
+import React, { type ReactElement } from 'react'
+import Document, { Html, Head, Main, NextScript, type DocumentInitialProps, type DocumentContext } from 'next/document'
 
 /*
  * [TODO:]
@@ -24,16 +23,15 @@ export default class MyDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
-                    {/*<meta httpEquiv="X-UA-Compatible" content="IE=edge"/>*/}
                     <meta charSet="UTF-8" />
-                    <meta name="referrer" content="origin" />
-                    <link rel="icon" href="/favicon.ico" />
-                    {/*<link*/}
-                    {/*    rel="stylesheet"*/}
-                    {/*    type="text/css"*/}
-                    {/*    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"*/}
-                    {/*/>*/}
-                    {/*<link rel="stylesheet" />*/}
+                    <meta
+                        name="referrer"
+                        content="origin"
+                    />
+                    <link
+                        rel="icon"
+                        href="/favicon.ico"
+                    />
                 </Head>
                 <body style={{ backgroundColor: '#000' }}>
                     <Main />

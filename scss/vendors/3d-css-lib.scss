@@ -50,18 +50,20 @@ SOFTWARE.*/
     border: 1px #ccc solid;
 }
 
-.cuboid-s:nth-child(1), .cuboid-s:nth-child(2) {
+.cuboid-s:nth-child(1),
+.cuboid-s:nth-child(2) {
     --co: -0.5;
     width: var(--width);
     height: var(--height);
-    transform: translate3d(0 , 0, calc(var(--depth) * var(--co)));
+    transform: translate3d(0, 0, calc(var(--depth) * var(--co)));
 }
 
 .cuboid-s:nth-child(2) {
     --co: 0.5;
 }
 
-.cuboid-s:nth-child(3), .cuboid-s:nth-child(4) {
+.cuboid-s:nth-child(3),
+.cuboid-s:nth-child(4) {
     --rt: 90deg;
     top: 50%;
     left: 50%;
@@ -74,16 +76,16 @@ SOFTWARE.*/
     --rt: -90deg;
 }
 
-.cuboid-s:nth-child(5), .cuboid-s:nth-child(6) {
+.cuboid-s:nth-child(5),
+.cuboid-s:nth-child(6) {
     --rt: -90deg;
     top: 50%;
     left: 50%;
     width: var(--width);
     height: var(--depth);
-    transform: translate(-50%, -50%) rotateX(var(--rt)) translate3d(0 , 0, calc(var(--height) * -0.5));
+    transform: translate(-50%, -50%) rotateX(var(--rt)) translate3d(0, 0, calc(var(--height) * -0.5));
 }
 
 .cuboid-s:nth-child(6) {
     --rt: 90deg;
 }
-

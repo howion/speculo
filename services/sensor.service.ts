@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs'
-import { Service } from '/services/service'
+import type { Service } from './service'
 
 export type FinalOrientationData = Int16Array // [yaw, roll, pitch]
 
@@ -25,15 +25,19 @@ export class SensorService implements Service<FinalOrientationData> {
             return
         }
 
-        window.addEventListener('deviceorientation', (e: DeviceOrientationEvent) => {
-            if (e.alpha === null) {
-                SensorService.disable()
-                alert('Can not read sensor (device orientation) data. Make sure it is a https connection.')
-                return
-            }
+        window.addEventListener(
+            'deviceorientation',
+            (e: DeviceOrientationEvent) => {
+                if (e.alpha === null) {
+                    SensorService.disable()
+                    alert('Can not read sensor (device orientation) data. Make sure it is a https connection.')
+                    return
+                }
 
-            window.addEventListener('deviceorientation', SensorService.handleDeviceOrientation, true)
-        }, {once: true})
+                window.addEventListener('deviceorientation', SensorService.handleDeviceOrientation, true)
+            },
+            { once: true }
+        )
 
         // window.addEventListener('devicemotion', SensorService.handleDeviceMotion, true)
         SensorService._dispatchInterval = setInterval(SensorService._dispatch, frequency)
@@ -45,7 +49,7 @@ export class SensorService implements Service<FinalOrientationData> {
         if (!SensorService._enabled) return
         window.removeEventListener('deviceorientation', SensorService.handleDeviceOrientation)
         // window.removeEventListener('devicemotion', SensorService.handleDeviceMotion)
-        clearInterval(SensorService._dispatchInterval)
+        clearInterval(SensorService._dispatchInterval as any)
         SensorService._enabled = false
     }
 
@@ -58,21 +62,15 @@ export class SensorService implements Service<FinalOrientationData> {
     }
 
     protected static handleDeviceOrientation(e: DeviceOrientationEvent): void {
+        const A = $$$(e.alpha!)
+        const G = $$$(e.gamma!)
+        const B = $$$(e.beta!)
 
-        // alpha: rotation around z-axis (0..360)
-        const yaw = $$$(e.alpha!)
+        // if (pitch < 0) pitch = 360 + pitch
 
-        // beta: rotation around x-axis (-180..+180) which will be normalized to (0..360)
-        let pitch = $$$(e.beta!)
-
-        // gamma: rotation around y-axis (0..180) where 90 is standard horizontal
-        const roll = $$$(e.gamma!)
-
-        if (pitch < 0) pitch = 360 + pitch
-
-        SensorService._ort[0] = yaw   // >= 0
-        SensorService._ort[1] = pitch // >= 0
-        SensorService._ort[2] = roll  // >= 0
+        SensorService._ort[0] = A // >= 0
+        SensorService._ort[1] = G // >= 0
+        SensorService._ort[2] = B // >= 0
 
         SensorService._dispatch()
     }
